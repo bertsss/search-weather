@@ -1,5 +1,5 @@
 <template>
-	<div class="small-card">
+	<div class="small-card" @click="$emit('click', location)">
 		<span>{{ location }}</span>
 
 		<div class="temp-container">
@@ -65,7 +65,7 @@ export default {
         align-items: center;
 
         .weather {
-            font-weight: 100;
+            font-weight: 400;
             font-size: 14px;
             color: #0ba399;
             margin-bottom: 5px;

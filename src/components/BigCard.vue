@@ -77,7 +77,7 @@ export default {
 	}
 
 	.weather {
-        font-weight: 100;
+        font-weight: 400;
 		font-size: 18px;
 		color: #0ba399;
 		margin-bottom: 5px;
