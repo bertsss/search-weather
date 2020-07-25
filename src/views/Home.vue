@@ -8,10 +8,12 @@
             v-for="(item, key) in list"
             @click="$router.push(`/view/${item.id}`)"
             :key="key"
-            :location='item.location'
-            :temp='item.temperature'
+            :location='`${item.city}, ${item.country}`'
             :weather='item.weather'
+            :temp='item.temp'
             :rangeTemp='item.rangeTemp'
+            :icon='item.icon'
+            :isClickable="true"
         />
         <img :src="require('@/assets/plus.png')" @click="$router.push('/add')">
 	</div>
@@ -28,16 +30,7 @@ export default {
 
 	data () {
 		return {
-			list: [
-				{ id: 1, location: 'Manila, Philippines', temperature: '10', weather: 'Sunny', rangeTemp: [13, 23] },
-				{ id: 1, location: 'Manila, Philippines', temperature: '20', weather: 'Sunny', rangeTemp: [13, 23] },
-				{ id: 1, location: 'Manila, Philippines', temperature: '30', weather: 'Sunny', rangeTemp: [13, 23] },
-				{ id: 1, location: 'Manila, Philippines', temperature: '40', weather: 'Sunny', rangeTemp: [13, 23] },
-				{ id: 1, location: 'Manila, Philippines', temperature: '50', weather: 'Sunny', rangeTemp: [13, 23] },
-				{ id: 1, location: 'Manila, Philippines', temperature: '25', weather: 'Sunny', rangeTemp: [13, 23] },
-				{ id: 1, location: 'Manila, Philippines', temperature: '35', weather: 'Sunny', rangeTemp: [13, 23] },
-				{ id: 1, location: 'Manila, Philippines', temperature: '45', weather: 'Sunny', rangeTemp: [13, 23] }
-			]
+			list: JSON.parse(localStorage.getItem('cities'))
 		}
 	}
 }

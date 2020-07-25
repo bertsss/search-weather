@@ -1,9 +1,9 @@
 <template>
-	<div class="small-card" @click="$emit('click', location)">
-		<span>{{ location }}</span>
+	<div class="small-card" @click="isClickable ? $emit('click', location): ''">
+		<span>{{isClickable? location : date }}</span>
 
 		<div class="temp-container">
-			<img :src="require('@/assets/sunny.png')" />
+			<img :src="`http://openweathermap.org/img/wn/${icon}.png`" :alt="weather" />
             <div class="weather-container">
                 <p class="weather">{{ weather }}</p>
                 <p class="temp">{{ range }}</p>
@@ -16,14 +16,14 @@
 <script>
 export default {
 	props: {
+		date: {
+			type: String,
+			default: new Date().toDateString()
+		},
+
 		location: {
 			type: String,
 			default: 'Manila, Philippines'
-		},
-
-		temp: {
-			type: String,
-			default: '10'
 		},
 
 		weather: {
@@ -31,9 +31,22 @@ export default {
 			default: 'Sunny'
 		},
 
+		temp: {
+			type: Number
+		},
+
 		rangeTemp: {
 			type: Array,
 			default: () => [13, 22]
+		},
+
+		icon: {
+			type: String
+		},
+
+		isClickable: {
+			type: Boolean,
+			default: false
 		}
 	},
 
@@ -56,7 +69,7 @@ export default {
 
 	span {
 		font-size: 16px;
-		font-weight: 400;
+        font-weight: 400;
 	}
 
 	.temp-container {
@@ -69,6 +82,7 @@ export default {
             font-size: 14px;
             color: #0ba399;
             margin-bottom: 5px;
+            text-transform: capitalize;
         }
 
         .temp {

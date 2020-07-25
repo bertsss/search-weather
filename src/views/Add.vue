@@ -23,7 +23,7 @@
 				<div
 					v-for="(item, key) in list"
 					class="country-container"
-					@click="$router.push('/')"
+					@click="select(item)"
 					:key="key"
 				>
 					<p class="country">{{ item.countryCode }}</p>
@@ -75,19 +75,48 @@ export default {
 					this.loading = false
 				}, 500)
 			}
-		}
+		},
 
-		// select (city) {
-		// 	const cities = JSON.parse(localStorage.getItem('cities'))
-		// 	if (cities) {
-		// 		if (cities.length === 5) cities.shift()
-		// 		cities.push(city)
-		// 		localStorage.setItem('cities', JSON.stringify(cities))
-		// 	} else {
-		// 		localStorage.setItem('cities', JSON.stringify([city]))
-		// 	}
-		// 	this.$router.push('/')
-		// }
+		async select (item) {
+			this.getWeather(item).then(city => {
+				const cities = JSON.parse(localStorage.getItem('cities'))
+				if (cities) {
+					if (cities.length === 5) cities.shift()
+					cities.push(city)
+					localStorage.setItem('cities', JSON.stringify(cities))
+				} else {
+					localStorage.setItem('cities', JSON.stringify([city]))
+				}
+				this.$router.push('/')
+			}).catch(err => {
+				alert(err)
+			})
+		},
+
+		async getWeather (item) {
+			return await new Promise(function (resolve, reject) {
+				fetch(`https://community-open-weather-map.p.rapidapi.com/forecast?q=${item.city},${item.countryCode}&units=metric`, {
+					method: 'GET',
+					headers: {
+						'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+						'x-rapidapi-key': '4efb42ea59mshc60e51b3f527ba8p1f76cbjsnd04f08ccbac5'
+					}
+				}).then(res => res.json()).then(data => {
+					if (data.message) reject(data.message)
+					const { weather, main } = data.list[0]
+					resolve({
+						city: item.city,
+						country: item.country,
+						icon: weather[0].icon,
+						weather: weather[0].description,
+						temp: Math.round(main.temp),
+						rangeTemp: [Math.floor(main.temp_min), Math.ceil(main.temp_max)]
+					})
+				}).catch(err => {
+					reject(err)
+				})
+			})
+		}
 	}
 }
 </script>

@@ -7,18 +7,18 @@ const routes = [
 	{
 		path: '/',
 		name: 'Home',
-		component: () => import('../views/Home.vue')
+		component: () => import('@/views/Home.vue')
 	},
 	{
 		path: '/add',
 		name: 'Add',
-		component: () => import('../views/Add.vue')
+		component: () => import('@/views/Add.vue')
 	},
 	{
 		path: '/view/:id',
 		name: 'View',
 		props: true,
-		component: () => import('../views/View.vue')
+		component: () => import('@/views/View.vue')
 	}
 ]
 

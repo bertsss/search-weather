@@ -6,11 +6,16 @@
             <img :src="require('@/assets/close.png')" @click="$router.push('/')">
             <h1>Manila, Philippines </h1>
             <h4>Forecast for the next 5 days</h4>
-            <SmallCard class="small-card-container"/>
-            <SmallCard class="small-card-container"/>
-            <SmallCard class="small-card-container"/>
-            <SmallCard class="small-card-container"/>
-            <SmallCard class="small-card-container"/>
+            <SmallCard
+                v-for="(item, key) in forecast"
+                class="small-card-container"
+                :key="key"
+                :date="new Date(item.dt_txt).toDateString()"
+                :weather="item.weather[0].description"
+                :temp="Math.round(item.main.temp)"
+                :rangeTemp="[Math.floor(item.main.temp_min), Math.ceil(item.main.temp_max)]"
+                :icon="item.weather[0].icon"
+            />
         </div>
 	</div>
 </template>
@@ -21,15 +26,28 @@ export default {
 
 	data () {
 		return {
-			loading: false
+			loading: false,
+			country: 'PH',
+			city: 'Manila',
+			forecast: []
 		}
 	},
 
 	created () {
 		this.loading = true
-		setTimeout(() => {
+		fetch(`https://community-open-weather-map.p.rapidapi.com/forecast?q=${this.city},${this.country}&units=metric`, {
+			method: 'GET',
+			headers: {
+				'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+				'x-rapidapi-key': '4efb42ea59mshc60e51b3f527ba8p1f76cbjsnd04f08ccbac5'
+			}
+		}).then(res => res.json()).then(data => {
+			this.forecast = data.list.filter(i => i.dt_txt.split(' ')[1] === '09:00:00')
 			this.loading = false
-		}, 1000)
+		}).catch(err => {
+			console.log(err)
+			this.loading = false
+		})
 	},
 
 	components: {
