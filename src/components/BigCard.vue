@@ -3,7 +3,7 @@
 		<span>{{ location }}</span>
 
 		<div class="temp-container">
-			<img :src="require('@/assets/sunny.png')" />
+			<img :src="`http://openweathermap.org/img/wn/${icon}.png`" :alt="weather" />
 			<p>{{ temp }}°C</p>
 		</div>
 
@@ -18,23 +18,23 @@
 export default {
 	props: {
 		location: {
-			type: String,
-			default: 'Manila, Philippines'
-		},
-
-		temp: {
-			type: String,
-			default: '10'
+			type: String
 		},
 
 		weather: {
-			type: String,
-			default: 'Sunny'
+			type: String
+		},
+
+		temp: {
+			type: Number
 		},
 
 		rangeTemp: {
-			type: Array,
-			default: () => [13, 22]
+			type: Array
+		},
+
+		icon: {
+			type: String
 		}
 	},
 
@@ -66,8 +66,8 @@ export default {
 		align-items: center;
 
 		img {
-			width: 100px;
-			height: 100px;
+			width: 60px;
+			height: 60px;
 		}
 
 		p {
@@ -80,7 +80,8 @@ export default {
         font-weight: 400;
 		font-size: 18px;
 		color: #0ba399;
-		margin-bottom: 5px;
+        margin-bottom: 5px;
+        text-transform: capitalize;
 	}
 
 	.temp {

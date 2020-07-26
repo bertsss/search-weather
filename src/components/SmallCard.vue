@@ -22,13 +22,11 @@ export default {
 		},
 
 		location: {
-			type: String,
-			default: 'Manila, Philippines'
+			type: String
 		},
 
 		weather: {
-			type: String,
-			default: 'Sunny'
+			type: String
 		},
 
 		temp: {
@@ -36,8 +34,7 @@ export default {
 		},
 
 		rangeTemp: {
-			type: Array,
-			default: () => [13, 22]
+			type: Array
 		},
 
 		icon: {
