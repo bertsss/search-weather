@@ -6,13 +6,13 @@
         <SmallCard
             class="small-card-container"
             v-for="(item, key) in list"
-            @click="$router.push(`/view/${item.id}`)"
+            @click="$router.push(`/view/${item.city}`)"
             :key="key"
             :location='`${item.city}, ${item.country}`'
-            :weather='item.weather'
-            :temp='item.temp'
-            :rangeTemp='item.rangeTemp'
-            :icon='item.icon'
+            :weather='item.forecast[0].weather[0].description'
+            :temp='Math.round(item.forecast[0].main.temp)'
+            :rangeTemp='[Math.floor(item.forecast[0].main.temp_min), Math.ceil(item.forecast[0].main.temp_max)]'
+            :icon='item.forecast[0].weather[0].icon'
             :isClickable="true"
         />
         <img :src="require('@/assets/plus.png')" @click="$router.push('/add')">
@@ -30,7 +30,7 @@ export default {
 
 	data () {
 		return {
-			list: JSON.parse(localStorage.getItem('cities'))
+			list: JSON.parse(localStorage.getItem('cities')).reverse()
 		}
 	}
 }

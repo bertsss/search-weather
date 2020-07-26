@@ -70,7 +70,7 @@ export default {
 					}).then(res => res.json()).then(data => {
 						this.list = data.data
 					}).catch(err => {
-						console.log(err)
+						alert(err)
 					})
 					this.loading = false
 				}, 500)
@@ -78,6 +78,7 @@ export default {
 		},
 
 		async select (item) {
+			this.loading = true
 			this.getWeather(item).then(city => {
 				const cities = JSON.parse(localStorage.getItem('cities'))
 				if (cities) {
@@ -87,9 +88,11 @@ export default {
 				} else {
 					localStorage.setItem('cities', JSON.stringify([city]))
 				}
+				this.loading = false
 				this.$router.push('/')
 			}).catch(err => {
 				alert(err)
+				this.loading = false
 			})
 		},
 
@@ -103,14 +106,12 @@ export default {
 					}
 				}).then(res => res.json()).then(data => {
 					if (data.message) reject(data.message)
-					const { weather, main } = data.list[0]
+					const time = data.list[0].dt_txt.split(' ')[1]
+
 					resolve({
 						city: item.city,
 						country: item.country,
-						icon: weather[0].icon,
-						weather: weather[0].description,
-						temp: Math.round(main.temp),
-						rangeTemp: [Math.floor(main.temp_min), Math.ceil(main.temp_max)]
+						forecast: data.list.filter(i => i.dt_txt.split(' ')[1] === time)
 					})
 				}).catch(err => {
 					reject(err)

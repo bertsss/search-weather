@@ -4,10 +4,10 @@
 
         <div v-else>
             <img :src="require('@/assets/close.png')" @click="$router.push('/')">
-            <h1>Manila, Philippines </h1>
+            <h1>{{ item.city }}, {{ item.country }}</h1>
             <h4>Forecast for the next 5 days</h4>
             <SmallCard
-                v-for="(item, key) in forecast"
+                v-for="(item, key) in item.forecast"
                 class="small-card-container"
                 :key="key"
                 :date="new Date(item.dt_txt).toDateString()"
@@ -23,31 +23,19 @@
 <script>
 export default {
 	name: 'View',
+	props: ['id'],
 
 	data () {
 		return {
+			item: null,
 			loading: false,
-			country: 'PH',
-			city: 'Manila',
-			forecast: []
+			list: JSON.parse(localStorage.getItem('cities'))
 		}
 	},
 
 	created () {
-		this.loading = true
-		fetch(`https://community-open-weather-map.p.rapidapi.com/forecast?q=${this.city},${this.country}&units=metric`, {
-			method: 'GET',
-			headers: {
-				'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
-				'x-rapidapi-key': '4efb42ea59mshc60e51b3f527ba8p1f76cbjsnd04f08ccbac5'
-			}
-		}).then(res => res.json()).then(data => {
-			this.forecast = data.list.filter(i => i.dt_txt.split(' ')[1] === '09:00:00')
-			this.loading = false
-		}).catch(err => {
-			console.log(err)
-			this.loading = false
-		})
+		this.item = this.list.filter(i => i.city === this.id)[0]
+		if (!this.item) this.$router.push('/pagenotfound')
 	},
 
 	components: {

@@ -1,6 +1,6 @@
 <template>
 	<div class="small-card" @click="isClickable ? $emit('click', location): ''">
-		<span>{{isClickable? location : date }}</span>
+		<span>{{isClickable ? location : date }}</span>
 
 		<div class="temp-container">
 			<img :src="`http://openweathermap.org/img/wn/${icon}.png`" :alt="weather" />
@@ -86,7 +86,7 @@ export default {
         }
 
         .temp {
-            font-size: 8px;
+            font-size: 10px;
             text-align: left;
         }
 
